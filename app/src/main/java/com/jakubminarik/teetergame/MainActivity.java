@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.SurfaceView;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -17,9 +19,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // setting activity to full screen
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
         setContentView(R.layout.activity_main);
 
-        getSupportActionBar().setTitle(R.string.teeter);
+        //getSupportActionBar().setTitle(R.string.teeter);
 
         ball = new Ball(100, 100);
 
@@ -42,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
 
         canvas.drawColor(Color.WHITE);
 
-        canvas.drawCircle(ball.x, ball.y, 50, paint);
+        canvas.drawCircle(ball.getX(), ball.getY(), 50, paint);
 
         surfaceView.getHolder().unlockCanvasAndPost(canvas);
     }
