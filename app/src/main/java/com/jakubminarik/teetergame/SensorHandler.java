@@ -15,6 +15,7 @@ public class SensorHandler implements SensorEventListener {
     private final float NOISE = 0.35f;
     private final static float alpha = 0.8f;
     private float[] gravity = new float[]{0f, 0f, 0f};
+    private final float GRAVITY = 9.8f; // Earth gravity acceleration
 
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
@@ -32,6 +33,28 @@ public class SensorHandler implements SensorEventListener {
         gravity[0] = alpha * gravity[0] + (1 - alpha) * clearValues[0];
         gravity[1] = alpha * gravity[1] + (1 - alpha) * clearValues[1];
         gravity[2] = alpha * gravity[2] + (1 - alpha) * clearValues[2];
+
+        // normalization
+        // gravity[0] = -1.2, gravity[1] = 0.8, gravity[2] = 7.3
+        // gravity[0]+gravity[1] + gravity[2] = 1.0
+
+        float sum = Math.abs(gravity[0]) + Math.abs(gravity[1]) + Math.abs(gravity[2]);
+        // in sum is going to be something like (1.2 + 0.8 + 7.3)
+
+        // conversion to 9.8 gravity acceleration by normalized values
+        // the whole thing will be much smoother after this process ;)
+        gravity[0] = (gravity[0] / sum * GRAVITY);
+        gravity[1] = (gravity[1] / sum * GRAVITY);
+        gravity[2] = (gravity[2] / sum * GRAVITY);
+
+        // next steps: 1. getting delta of passed time - from milliseconds to second
+        float deltaTime = (float) (nowMillis - lastMillis) / 1000f;
+        // why seconds? its because acceleration in m/s
+        // MEETING in 13:30
+
+        // 2. getting the new velocity of ball from values
+        // v = a*t    (v = velocity, a = acceleration, t = time)
+        // v1 = v0 + a*t
 
         lastMillis = System.currentTimeMillis();
     }
