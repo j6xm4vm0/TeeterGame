@@ -48,12 +48,8 @@ public class MainActivity extends AppCompatActivity {
         paint = new Paint();
         paint.setColor(Color.GRAY);
 
-        TextView textView1 = findViewById(R.id.textView1);
-        TextView textView2 = findViewById(R.id.textView2);
-        TextView textView3 = findViewById(R.id.textView3);
-
         handler = new SensorHandler(); // instance of our sensor handler
-        handler.addTextViews(textView1, textView2, textView3);
+        //handler.addTextViews(textView1, textView2, textView3);
         handler.init(this, surfaceView);
 
         // https://github.com/minarja1/TeeterGame.git
@@ -72,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
                 if (init) {
                     draw();
                 }
-                handlerOS.postDelayed(runnable, 1000/FPS);
+                handlerOS.postDelayed(runnable, 1000 / FPS);
             }
         };
     }
