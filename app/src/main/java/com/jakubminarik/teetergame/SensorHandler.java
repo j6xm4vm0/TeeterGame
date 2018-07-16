@@ -14,7 +14,6 @@ public class SensorHandler implements SensorEventListener {
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
 
-        //textView1.setText(String.format("%.2f", sensorEvent.values[0]));
     }
 
     @Override

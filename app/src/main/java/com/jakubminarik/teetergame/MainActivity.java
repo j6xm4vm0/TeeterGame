@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         TextView textView3 = findViewById(R.id.textView3);
 
         handler = new SensorHandler(); // instance of our sensor handler
-
+        handler.addTextViews(textView1, textView2, textView3);
         handler.init(this, surfaceView);
 
         // https://github.com/minarja1/TeeterGame.git
