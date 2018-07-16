@@ -13,7 +13,12 @@ public class SensorHandler implements SensorEventListener {
 
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
-
+        textView1.setTextSize(30);
+        textView2.setTextSize(30);
+        textView3.setTextSize(30);
+        textView1.setText("" + sensorEvent.values[0]);
+        textView2.setText(String.valueOf(sensorEvent.values[1]));
+        textView3.setText(String.format("%.3f", sensorEvent.values[2]));
     }
 
     @Override
