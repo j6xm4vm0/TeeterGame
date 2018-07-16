@@ -40,7 +40,8 @@ public class MainActivity extends AppCompatActivity {
         surfaceView.post(new Runnable() {
             @Override
             public void run() {
-                draw();
+                handler = new SensorHandler(); // instance of our sensor handler
+                handler.init(MainActivity.this, surfaceView);
                 init = true;
             }
         });
@@ -48,8 +49,8 @@ public class MainActivity extends AppCompatActivity {
         paint = new Paint();
         paint.setColor(Color.GRAY);
 
-        handler = new SensorHandler(); // instance of our sensor handler
-        handler.init(this, surfaceView);
+        //handler = new SensorHandler(); // instance of our sensor handler
+        //handler.init(this, surfaceView);
 
         handlerOS = new Handler();
         runnable = new Runnable() {

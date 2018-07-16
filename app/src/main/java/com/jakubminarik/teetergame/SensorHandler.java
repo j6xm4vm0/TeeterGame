@@ -12,6 +12,8 @@ import android.view.WindowManager;
 
 public class SensorHandler implements SensorEventListener {
 
+    private static final float FRICTION = 0.95f;
+    private static final float REFLECTION = 0.99f;
     private Ball ball;
 
     private long lastMillis;
@@ -64,6 +66,13 @@ public class SensorHandler implements SensorEventListener {
         float newVelocityX = gravity[0] * deltaTime;
         float newVelocityY = gravity[1] * deltaTime;
 
+        float nowFriction;
+        if (gravity[0] > -NOISE && gravity[0] < NOISE && gravity[1] > -NOISE && gravity[1] < NOISE) {
+            nowFriction = 0.97f;
+        } else {
+            nowFriction = FRICTION;
+        }
+
         float xValue, yValue;
         if (orientation == Surface.ROTATION_0) {
             xValue = newVelocityX;
@@ -80,21 +89,38 @@ public class SensorHandler implements SensorEventListener {
         }
 
         //v = v0 + a*t
-        float velX = ball.getVelocityX() + xValue;
-        float velY = ball.getVelocityY() + yValue;
+        float velX = ball.getVelocityX() * nowFriction + xValue;
+        float velY = ball.getVelocityY() * nowFriction + yValue;
 
         ball.setVelocityX((alpha * ball.getVelocityX()) + (1 - alpha) * velX);
         ball.setVelocityY((alpha * ball.getVelocityY()) + (1 - alpha) * velY);
 
         lastMillis = nowMillis;
 
+        // collision detection here - 4 screen sides
+
         //move ball according to velocity
         Ball.Point2D ballPosition = ball.getPositionPoint();
         ballPosition.setX(ballPosition.getX() - velX * deltaTime);
         ballPosition.setY(ballPosition.getY() + velY * deltaTime);
 
-        // orientation
-        // friction
+        if (ballPosition.getX() < pixelsToMeters(ball.getRadius(), density)) {
+            // LEFT
+            ballPosition.setX(pixelsToMeters(ball.getRadius(), density));
+            ball.setVelocityX(ball.getVelocityX() * (-REFLECTION));
+        } else if (ballPosition.getY() < pixelsToMeters(ball.getRadius(), density)) {
+            // TOP
+            ballPosition.setY(pixelsToMeters(ball.getRadius(), density));
+            ball.setVelocityY(ball.getVelocityY() * (-REFLECTION));
+        } else if (ballPosition.getX() > (width)) {
+            // RIGHT
+            ballPosition.setX(width);
+            ball.setVelocityX(ball.getVelocityX() * (-REFLECTION));
+        } else if (ballPosition.getY() > (height)) {
+            // BOTTOM
+            ballPosition.setY(height);
+            ball.setVelocityY(ball.getVelocityY() * (-REFLECTION));
+        }
 
     }
 
