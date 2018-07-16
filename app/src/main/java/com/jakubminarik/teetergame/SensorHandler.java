@@ -5,7 +5,10 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.view.Display;
+import android.view.Surface;
 import android.view.SurfaceView;
+import android.view.WindowManager;
 
 public class SensorHandler implements SensorEventListener {
 
@@ -19,6 +22,7 @@ public class SensorHandler implements SensorEventListener {
 
     private float width, height;
     private int density; // DPI - dots per inch (PPI pixels per inch)
+    private int orientation;
 
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
@@ -60,9 +64,24 @@ public class SensorHandler implements SensorEventListener {
         float newVelocityX = gravity[0] * deltaTime;
         float newVelocityY = gravity[1] * deltaTime;
 
+        float xValue, yValue;
+        if (orientation == Surface.ROTATION_0) {
+            xValue = newVelocityX;
+            yValue = newVelocityY;
+        } else if (orientation == Surface.ROTATION_90) {
+            xValue = -newVelocityY;
+            yValue = newVelocityX;
+        } else if (orientation == Surface.ROTATION_180) {
+            xValue = -newVelocityX;
+            yValue = -newVelocityY;
+        } else {
+            xValue = newVelocityY;
+            yValue = -newVelocityX;
+        }
+
         //v = v0 + a*t
-        float velX = ball.getVelocityX() + newVelocityX;
-        float velY = ball.getVelocityY() + newVelocityY;
+        float velX = ball.getVelocityX() + xValue;
+        float velY = ball.getVelocityY() + yValue;
 
         ball.setVelocityX((alpha * ball.getVelocityX()) + (1 - alpha) * velX);
         ball.setVelocityY((alpha * ball.getVelocityY()) + (1 - alpha) * velY);
@@ -72,7 +91,7 @@ public class SensorHandler implements SensorEventListener {
         //move ball according to velocity
         Ball.Point2D ballPosition = ball.getPositionPoint();
         ballPosition.setX(ballPosition.getX() - velX * deltaTime);
-        ballPosition.setY(ballPosition.getY() - velY * deltaTime);
+        ballPosition.setY(ballPosition.getY() + velY * deltaTime);
 
         // orientation
         // friction
@@ -86,6 +105,9 @@ public class SensorHandler implements SensorEventListener {
 
     // method for initalizing hardware sensors of device
     public void init(Context context, SurfaceView surfaceView) {
+        Display display = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+        orientation = display.getRotation();
+
         // lets fill width, height and density
         density = context.getResources().getDisplayMetrics().densityDpi;
 
