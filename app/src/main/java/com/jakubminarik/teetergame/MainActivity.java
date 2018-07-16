@@ -9,12 +9,14 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
     private SurfaceView surfaceView;
     private Ball ball;
     private Paint paint;
+    private SensorHandler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +46,14 @@ public class MainActivity extends AppCompatActivity {
 
         paint = new Paint();
         paint.setColor(Color.GRAY);
+
+        TextView textView1 = findViewById(R.id.textView1);
+        TextView textView2 = findViewById(R.id.textView2);
+        TextView textView3 = findViewById(R.id.textView3);
+
+        handler = new SensorHandler(); // instance of our sensor handler
+
+        handler.init(this, surfaceView);
 
         // https://github.com/minarja1/TeeterGame.git
 
