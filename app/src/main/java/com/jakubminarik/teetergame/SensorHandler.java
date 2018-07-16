@@ -74,6 +74,8 @@ public class SensorHandler implements SensorEventListener {
         ballPosition.setX(ballPosition.getX() - velX * deltaTime);
         ballPosition.setY(ballPosition.getY() - velY * deltaTime);
 
+        // orientation
+        // friction
 
     }
 
@@ -91,7 +93,7 @@ public class SensorHandler implements SensorEventListener {
         SensorManager manager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         manager.registerListener(this, manager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_FASTEST);
         ball = new Ball();
-        ball.setPositionPoint(new Ball.Point2D(100, 100));
+        ball.setPositionPoint(new Ball.Point2D(pixelsToMeters(100, density), pixelsToMeters(100, density)));
         ball.setRadius(50);
 
         width = surfaceView.getWidth() - ball.getRadius();
@@ -118,6 +120,6 @@ public class SensorHandler implements SensorEventListener {
     }
 
     public Ball.Point2D getBallPosition() {
-        return ball.getPositionPoint();
+        return new Ball.Point2D(metersToPixels(ball.getPositionPoint().getX(), density), metersToPixels(ball.getPositionPoint().getY(), density));
     }
 }

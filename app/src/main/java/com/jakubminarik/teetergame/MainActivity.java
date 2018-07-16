@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 draw();
-
+                init = true;
             }
         });
 
@@ -50,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
 
         handler = new SensorHandler(); // instance of our sensor handler
         handler.init(this, surfaceView);
-        init = true;
 
         handlerOS = new Handler();
         runnable = new Runnable() {
