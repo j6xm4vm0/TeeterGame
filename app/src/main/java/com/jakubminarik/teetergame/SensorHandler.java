@@ -17,6 +17,9 @@ public class SensorHandler implements SensorEventListener {
     private float[] gravity = new float[]{0f, 0f, 0f};
     private final float GRAVITY = 9.8f; // Earth gravity acceleration
 
+    private float width, height;
+    private int density; // DPI - dots per inch (PPI pixels per inch)
+
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
         long nowMillis = System.currentTimeMillis();
@@ -52,12 +55,26 @@ public class SensorHandler implements SensorEventListener {
         // why seconds? its because acceleration in m/s
 
 
-
         // getting the new velocity of ball from values
         // v = a*t    (v = velocity, a = acceleration, t = time)
-        // v1 = v0 + a*t
+        float newVelocityX = gravity[0] * deltaTime;
+        float newVelocityY = gravity[1] * deltaTime;
 
-        lastMillis = System.currentTimeMillis();
+        //v = v0 + a*t
+        float velX = ball.getVelocityX() + newVelocityX;
+        float velY = ball.getVelocityY() + newVelocityY;
+
+        ball.setVelocityX((alpha * ball.getVelocityX()) + (1 - alpha) * velX);
+        ball.setVelocityY((alpha * ball.getVelocityY()) + (1 - alpha) * velY);
+
+        lastMillis = nowMillis;
+
+        //move ball according to velocity
+        Ball.Point2D ballPosition = ball.getPositionPoint();
+        ballPosition.setX(ballPosition.getX() - velX * deltaTime);
+        ballPosition.setY(ballPosition.getY() - velY * deltaTime);
+
+
     }
 
     @Override
@@ -67,19 +84,40 @@ public class SensorHandler implements SensorEventListener {
 
     // method for initalizing hardware sensors of device
     public void init(Context context, SurfaceView surfaceView) {
+        // lets fill width, height and density
+        density = context.getResources().getDisplayMetrics().densityDpi;
+
         // this is how we get sensor manager from system of device
         SensorManager manager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         manager.registerListener(this, manager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_FASTEST);
         ball = new Ball();
         ball.setPositionPoint(new Ball.Point2D(100, 100));
+        ball.setRadius(50);
+
+        width = surfaceView.getWidth() - ball.getRadius();
+        height = surfaceView.getHeight() - ball.getRadius();
+
+        // conversion to metters
+        width = pixelsToMeters((int) width, density);
+        height = pixelsToMeters((int) height, density);
     }
 
     private float clear(float f) {
         return (f < NOISE && f > -NOISE) ? 0 : f;
     }
 
+    private float pixelsToMeters(int pixelsCount, int density) {
+        // DPI (PPI) pixels per inch
+        return ((float) pixelsCount / (float) density / 39f);
+        // from pixels to metters
+    }
+
+    private int metersToPixels(float metersCount, int density) {
+        // from meters to pixels
+        return (int) (metersCount * 39f * (float) density);
+    }
+
     public Ball.Point2D getBallPosition() {
-        //return the ball position
         return ball.getPositionPoint();
     }
 }

@@ -49,19 +49,10 @@ public class MainActivity extends AppCompatActivity {
         paint.setColor(Color.GRAY);
 
         handler = new SensorHandler(); // instance of our sensor handler
-        //handler.addTextViews(textView1, textView2, textView3);
         handler.init(this, surfaceView);
+        init = true;
 
-        // https://github.com/minarja1/TeeterGame.git
-
-        // Plans for today
-        // 1. creation of new sensor manager - DONE
-        // 2. showing the data from accelerometer - DONE
-        // 3. implementing FPS
-        // 4. using data to move the ball
-        // 5. handling collisions
-
-
+        handlerOS = new Handler();
         runnable = new Runnable() {
             @Override
             public void run() {
@@ -71,6 +62,15 @@ public class MainActivity extends AppCompatActivity {
                 handlerOS.postDelayed(runnable, 1000 / FPS);
             }
         };
+        handlerOS.postDelayed(runnable, 1000 / FPS);
+    }
+
+    @Override
+    protected void onPause() {
+        handlerOS.removeCallbacks(runnable);
+        // todo - stop sensorHandler later
+        init = false;
+        super.onPause();
     }
 
     private void draw() {
