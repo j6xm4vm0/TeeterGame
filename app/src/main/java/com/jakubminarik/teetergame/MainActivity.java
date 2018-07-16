@@ -44,6 +44,12 @@ public class MainActivity extends AppCompatActivity {
 
         paint = new Paint();
         paint.setColor(Color.GRAY);
+
+        // Plans for today
+        // 1. creation of new sensor manager
+        // 2. showing the data from accelerometer
+        // 3. using data to move the ball
+        // 4. handling collisions
     }
 
     private void draw() {
