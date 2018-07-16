@@ -47,12 +47,13 @@ public class SensorHandler implements SensorEventListener {
         gravity[1] = (gravity[1] / sum * GRAVITY);
         gravity[2] = (gravity[2] / sum * GRAVITY);
 
-        // next steps: 1. getting delta of passed time - from milliseconds to second
+        // getting delta of passed time - from milliseconds to second
         float deltaTime = (float) (nowMillis - lastMillis) / 1000f;
         // why seconds? its because acceleration in m/s
-        // MEETING in 13:30
 
-        // 2. getting the new velocity of ball from values
+
+
+        // getting the new velocity of ball from values
         // v = a*t    (v = velocity, a = acceleration, t = time)
         // v1 = v0 + a*t
 
