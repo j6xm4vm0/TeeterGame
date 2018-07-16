@@ -120,6 +120,9 @@ public class SensorHandler implements SensorEventListener {
     }
 
     public Ball.Point2D getBallPosition() {
-        return new Ball.Point2D(metersToPixels(ball.getPositionPoint().getX(), density), metersToPixels(ball.getPositionPoint().getY(), density));
+        return new Ball.Point2D(
+                metersToPixels(ball.getPositionPoint().getX(), density)
+                , metersToPixels(ball.getPositionPoint().getY(), density)
+        );
     }
 }
