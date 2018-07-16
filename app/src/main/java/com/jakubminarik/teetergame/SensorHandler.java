@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 public class SensorHandler implements SensorEventListener {
 
+    private Ball ball;
 
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
@@ -30,6 +31,8 @@ public class SensorHandler implements SensorEventListener {
         // this is how we get sensor manager from system of device
         SensorManager manager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         manager.registerListener(this, manager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_FASTEST);
+        ball = new Ball();
+        ball.setPositionPoint(new Ball.Point2D(100,100));
     }
 
     //this method and textViews are just temporary - we will delete them later
@@ -40,4 +43,8 @@ public class SensorHandler implements SensorEventListener {
         this.textView3 = textView3;
     }
 
+    public Ball.Point2D getBallPosition() {
+        //return the ball position
+        return ball.getPositionPoint();
+    }
 }

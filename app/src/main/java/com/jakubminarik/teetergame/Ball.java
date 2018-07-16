@@ -3,20 +3,40 @@ package com.jakubminarik.teetergame;
 public class Ball {
 
     public int radius;
-    private int x, y;
     private float velocityX = 0f;
     private float velocityY = 0f;
+    private Point2D positionPoint;
 
-    public Ball(int x, int y){
-        this.x = x;
-        this.y = y;
+    public static class Point2D {
+        private float x, y;
+
+        public Point2D(float x, float y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        public float getX() {
+            return x;
+        }
+
+        public void setX(float x) {
+            this.x = x;
+        }
+
+        public float getY() {
+            return y;
+        }
+
+        public void setY(float y) {
+            this.y = y;
+        }
     }
 
-    public int getX() {
-        return x;
+    public Point2D getPositionPoint() {
+        return positionPoint;
     }
 
-    public int getY() {
-        return y;
+    public void setPositionPoint(Point2D positionPoint) {
+        this.positionPoint = positionPoint;
     }
 }

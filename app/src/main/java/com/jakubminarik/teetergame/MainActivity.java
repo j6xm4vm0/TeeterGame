@@ -3,20 +3,23 @@ package com.jakubminarik.teetergame;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v7.app.AppCompatActivity;
 import android.view.SurfaceView;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final int FPS = 120;
     private SurfaceView surfaceView;
-    private Ball ball;
     private Paint paint;
     private SensorHandler handler;
+    private Runnable runnable;
+    private Handler handlerOS;
+    private boolean init;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,8 +34,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //getSupportActionBar().setTitle(R.string.teeter);
-
-        ball = new Ball(100, 100);
 
         surfaceView = findViewById(R.id.surfaceView);
 
@@ -58,20 +59,34 @@ public class MainActivity extends AppCompatActivity {
         // https://github.com/minarja1/TeeterGame.git
 
         // Plans for today
-        // 1. creation of new sensor manager
-        // 2. showing the data from accelerometer
-        // 3. using data to move the ball
-        // 4. handling collisions
+        // 1. creation of new sensor manager - DONE
+        // 2. showing the data from accelerometer - DONE
+        // 3. implementing FPS
+        // 4. using data to move the ball
+        // 5. handling collisions
 
 
+        runnable = new Runnable() {
+            @Override
+            public void run() {
+                if (init) {
+                    draw();
+                }
+                handlerOS.postDelayed(runnable, 1000/FPS);
+            }
+        };
     }
 
     private void draw() {
+        //obtain position of the ball from handler
+        //draw ball on given position
         Canvas canvas = surfaceView.getHolder().lockCanvas();
 
         canvas.drawColor(Color.WHITE);
 
-        canvas.drawCircle(ball.getX(), ball.getY(), 50, paint);
+        Ball.Point2D ballPosition = handler.getBallPosition();
+
+        canvas.drawCircle(ballPosition.getX(), ballPosition.getY(), 50, paint);
 
         surfaceView.getHolder().unlockCanvasAndPost(canvas);
     }
