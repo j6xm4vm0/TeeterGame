@@ -49,9 +49,6 @@ public class MainActivity extends AppCompatActivity {
         paint = new Paint();
         paint.setColor(Color.GRAY);
 
-        //handler = new SensorHandler(); // instance of our sensor handler
-        //handler.init(this, surfaceView);
-
         handlerOS = new Handler();
         runnable = new Runnable() {
             @Override
@@ -63,6 +60,16 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         handlerOS.postDelayed(runnable, 1000 / FPS);
+
+        // LAST DAY of Mobile Development
+        // 1. TEST
+        // 2. Creating holes in game (iw)
+        // 3. Creating obstacles (iw)
+        // 4. Collision detection with obstacles (iw)
+
+        // 5. Detection of falling in the holes (iw)
+        // 6. Loading levels from JSON format using GSON library
+        // 7. BONUS: adding a timer and a some competition
     }
 
     @Override
