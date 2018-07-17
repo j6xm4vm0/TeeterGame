@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
                 Obstacle obstacle = new Obstacle();
                 obstacle.setX(300);
                 obstacle.setY(300);
-                obstacle.setX2(400);
+                obstacle.setX2(600);
                 obstacle.setY2(600);
                 level.getObstacles().add(obstacle);
 

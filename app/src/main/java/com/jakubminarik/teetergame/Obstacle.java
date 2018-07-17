@@ -55,6 +55,31 @@ public class Obstacle {
             ball.setVelocityX(ball.getVelocityX() * (-SensorHandler.REFLECTION));
         }
 
-        //todo individual work: solve at least one of the remaining sides
+        //right side of obstacle
+        else if (ballPosition.getX() < x2 + ball.getRadius()
+                && ballPosition.getX() > x2 - ball.getRadius()
+                && ballPosition.getY() > y - ball.getRadius()
+                && ballPosition.getY() < y2 + ball.getRadius()) {
+            ball.getPositionPoint().setX(SensorHandler.pixelsToMeters(x2 + ball.getRadius(), density));
+            ball.setVelocityX(ball.getVelocityX() * (-SensorHandler.REFLECTION));
+        }
+
+        //top side of obstacle
+        else if (ballPosition.getX() > x - ball.getRadius()
+                && ballPosition.getX() < x2 + ball.getRadius()
+                && ballPosition.getY() > y - ball.getRadius()
+                && ballPosition.getY() < y + ball.getRadius()) {
+            ball.getPositionPoint().setY(SensorHandler.pixelsToMeters(y - ball.getRadius(), density));
+            ball.setVelocityY(ball.getVelocityY() * (-SensorHandler.REFLECTION));
+        }
+
+        //bottom side of obstacle
+        else if (ballPosition.getX() > x - ball.getRadius()
+                && ballPosition.getX() < x2 + ball.getRadius()
+                && ballPosition.getY() < y2 + ball.getRadius()
+                && ballPosition.getY() > y2 - ball.getRadius()) {
+            ball.getPositionPoint().setY(SensorHandler.pixelsToMeters(y2 + ball.getRadius(), density));
+            ball.setVelocityY(ball.getVelocityY() * (-SensorHandler.REFLECTION));
+        }
     }
 }
