@@ -1,5 +1,8 @@
 package com.jakubminarik.teetergame;
 
+import android.content.Context;
+
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Level {
@@ -55,5 +58,17 @@ public class Level {
     }
     public boolean hasEndingPosition(){
         return endPosition != null;
+    }
+
+    public static class Loader {
+
+        public static Level loadFromAssets(Context context,
+                                           String assetFileName,
+                                           int width,
+                                           int height) throws IOException{
+
+            // buffered reader, gson, resizing level objects
+            return null;
+        }
     }
 }
