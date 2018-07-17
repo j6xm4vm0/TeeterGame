@@ -23,7 +23,7 @@ public class SensorHandler implements SensorEventListener {
     private final float GRAVITY = 9.8f; // Earth gravity acceleration
 
     private float width, height;
-    private int density; // DPI - dots per inch (PPI pixels per inch)
+    public int density; // DPI - dots per inch (PPI pixels per inch)
     private int orientation;
 
     @Override
@@ -156,13 +156,13 @@ public class SensorHandler implements SensorEventListener {
         return (f < NOISE && f > -NOISE) ? 0 : f;
     }
 
-    private float pixelsToMeters(int pixelsCount, int density) {
+    public float pixelsToMeters(int pixelsCount, int density) {
         // DPI (PPI) pixels per inch
         return ((float) pixelsCount / (float) density / 39f);
         // from pixels to metters
     }
 
-    private int metersToPixels(float metersCount, int density) {
+    public int metersToPixels(float metersCount, int density) {
         // from meters to pixels
         return (int) (metersCount * 39f * (float) density);
     }
