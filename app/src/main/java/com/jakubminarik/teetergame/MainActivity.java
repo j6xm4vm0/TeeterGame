@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private Handler handlerOS;
     private boolean init;
 
+    private Level level;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,24 +43,25 @@ public class MainActivity extends AppCompatActivity {
         surfaceView.post(new Runnable() {
             @Override
             public void run() {
+                level = new Level(surfaceView.getWidth(), surfaceView.getHeight());
+                Hole hole = new Hole(200, 200);
+                level.getHoles().add(hole);
+
+                Obstacle obstacle = new Obstacle();
+                obstacle.setX(300);
+                obstacle.setY(300);
+                obstacle.setX2(400);
+                obstacle.setY2(600);
+                level.getObstacles().add(obstacle);
+
                 handler = new SensorHandler(); // instance of our sensor handler
-                handler.init(MainActivity.this, surfaceView);
+                handler.init(MainActivity.this, surfaceView, level);
                 init = true;
             }
         });
 
         paint = new Paint();
         paint.setColor(Color.GRAY);
-
-        Hole hole = new Hole(200, 200);
-        holes.add(hole);
-
-        Obstacle obstacle = new Obstacle();
-        obstacle.setX(300);
-        obstacle.setY(300);
-        obstacle.setX2(400);
-        obstacle.setY2(600);
-        obstacles.add(obstacle);
 
         handlerOS = new Handler();
         runnable = new Runnable() {
@@ -103,13 +105,13 @@ public class MainActivity extends AppCompatActivity {
         canvas.drawCircle(ballPosition.getX(), ballPosition.getY(), 50, paint);
 
         paint.setColor(Color.BLACK); //color of holes and obstacles
-        for (Hole hole : holes) {
+        for (Hole hole : level.getHoles()) {
             canvas.drawCircle(
                     hole.getPositionInMeters().getX(),
                     hole.getPositionInMeters().getY(),
                     50, paint);
         }
-        for (Obstacle obstacle : obstacles) {
+        for (Obstacle obstacle : level.getObstacles()) {
             canvas.drawRect(obstacle.getX(), obstacle.getY(), obstacle.getX2(), obstacle.getY2(), paint);
         }
         paint.setColor(Color.GRAY); //change the pain back to the ball color

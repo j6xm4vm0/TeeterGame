@@ -25,6 +25,9 @@ public class SensorHandler implements SensorEventListener {
     private float width, height;
     public int density; // DPI - dots per inch (PPI pixels per inch)
     private int orientation;
+    private Level level;
+
+    // 10:10
 
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
@@ -130,7 +133,7 @@ public class SensorHandler implements SensorEventListener {
     }
 
     // method for initalizing hardware sensors of device
-    public void init(Context context, SurfaceView surfaceView) {
+    public void init(Context context, SurfaceView surfaceView, Level level) {
         Display display = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
         orientation = display.getRotation();
 
@@ -150,6 +153,8 @@ public class SensorHandler implements SensorEventListener {
         // conversion to metters
         width = pixelsToMeters((int) width, density);
         height = pixelsToMeters((int) height, density);
+
+        this.level = level;
     }
 
     private float clear(float f) {
