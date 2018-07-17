@@ -36,4 +36,25 @@ public class Obstacle {
     public void setY2(int y2) {
         this.y2 = y2;
     }
+
+    public void handleCollision(Ball ball, int density) {
+        //get ball position
+        Ball.Point2D ballPositionInMeters = ball.getPositionPoint();
+
+        //convert position to pixels
+        Ball.Point2D ballPosition = new Ball.Point2D(
+                SensorHandler.metersToPixels(ballPositionInMeters.getX(), density),
+                SensorHandler.metersToPixels(ballPositionInMeters.getY(), density));
+
+        //left side of obstacle
+        if (ballPosition.getX() > x - ball.getRadius()
+                && ballPosition.getX() < x + ball.getRadius()
+                && ballPosition.getY() > y - ball.getRadius()
+                && ballPosition.getY() < y2 + ball.getRadius()) {
+            ball.getPositionPoint().setX(SensorHandler.pixelsToMeters(x - ball.getRadius(), density));
+            ball.setVelocityX(ball.getVelocityX() * (-SensorHandler.REFLECTION));
+        }
+
+        //todo individual work: solve at least one of the remaining sides
+    }
 }

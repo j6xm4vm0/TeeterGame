@@ -13,7 +13,7 @@ import android.view.WindowManager;
 public class SensorHandler implements SensorEventListener {
 
     private static final float FRICTION = 0.95f;
-    private static final float REFLECTION = 0.99f;
+    public static final float REFLECTION = 0.99f;
     private Ball ball;
 
     private long lastMillis;
@@ -125,6 +125,9 @@ public class SensorHandler implements SensorEventListener {
             ball.setVelocityY(ball.getVelocityY() * (-REFLECTION));
         }
 
+        for (Obstacle obstacle : level.getObstacles()) {
+            obstacle.handleCollision(ball, density);
+        }
     }
 
     @Override
@@ -161,13 +164,13 @@ public class SensorHandler implements SensorEventListener {
         return (f < NOISE && f > -NOISE) ? 0 : f;
     }
 
-    public float pixelsToMeters(int pixelsCount, int density) {
+    public static float pixelsToMeters(int pixelsCount, int density) {
         // DPI (PPI) pixels per inch
         return ((float) pixelsCount / (float) density / 39f);
         // from pixels to metters
     }
 
-    public int metersToPixels(float metersCount, int density) {
+    public static int metersToPixels(float metersCount, int density) {
         // from meters to pixels
         return (int) (metersCount * 39f * (float) density);
     }
